@@ -49,12 +49,10 @@ class EpgGridLayout: UICollectionViewLayout
         layoutInfo = NSMutableDictionary()
         framesInfo = NSMutableDictionary()
         channels = Channel.channels()
-        calculateFramesForAllPrograms()
     }
     override func prepareLayout()
     {
-        
-
+        calculateFramesForAllPrograms()
         var newLayoutInfo = NSMutableDictionary()
         var cellLayoutInfo = NSMutableDictionary()
         if let chs = channels
@@ -169,7 +167,6 @@ class EpgGridLayout: UICollectionViewLayout
     {
         xPos = 0
         yPos = 0
-        calculateFramesForAllPrograms()
         super.invalidateLayout()
     }
 }
