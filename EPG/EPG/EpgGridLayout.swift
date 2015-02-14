@@ -49,10 +49,11 @@ class EpgGridLayout: UICollectionViewLayout
         layoutInfo = NSMutableDictionary()
         framesInfo = NSMutableDictionary()
         channels = Channel.channels()
+        calculateFramesForAllPrograms()
     }
     override func prepareLayout()
     {
-        calculateFramesForAllPrograms()
+        
 
         var newLayoutInfo = NSMutableDictionary()
         var cellLayoutInfo = NSMutableDictionary()
@@ -162,19 +163,13 @@ class EpgGridLayout: UICollectionViewLayout
     }
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
     {
-        if let colView = collectionView
-        {
-            if (!CGRectEqualToRect(colView.bounds, newBounds))
-            {
-                return true
-            }
-        }
-        return false
+        return !CGSizeEqualToSize(collectionView!.bounds.size, newBounds.size)
     }
     override func invalidateLayout()
     {
         xPos = 0
         yPos = 0
+        calculateFramesForAllPrograms()
         super.invalidateLayout()
     }
 }

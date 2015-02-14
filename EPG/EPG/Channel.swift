@@ -21,7 +21,7 @@ class Channel: NSObject
         var startDate = NSDate()
         startDate = cal.startOfDayForDate(startDate)
         
-        for i in 1...20
+        for i in 1...100
         {
             var ch:Channel = Channel()
             ch.channelNumber = "\(i)"
