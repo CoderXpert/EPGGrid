@@ -23,23 +23,23 @@ class Channel: NSObject
         
         for i in 1...100
         {
-            var ch:Channel = Channel()
+            let ch:Channel = Channel()
             ch.channelNumber = "\(i)"
             ch.channelName = "CH \(i)"
             ch.programs = []
             
             //Lets generate some programs data,
-            var date = cal.dateByAddingUnit(.DayCalendarUnit, value: -1, toDate: startDate, options: nil)!
-            var endDate = startDate.dateByAddingTimeInterval(60 * 60 * 24 * 7)
+            var date = cal.dateByAddingUnit(.Day, value: -1, toDate: startDate, options: [])!
+            let endDate = startDate.dateByAddingTimeInterval(60 * 60 * 24 * 7)
             
             var j = 1
             while (date.compare(endDate) == NSComparisonResult.OrderedAscending)
             {
-                var program = Program()
+                let program = Program()
                 program.name = "Program \(j)"
-                var random = Int(arc4random_uniform(2)+1)
+                let random = Int(arc4random_uniform(2)+1)
                 program.startTime = date
-                program.endTime = date.dateByAddingTimeInterval(Double(random) * 3600)!
+                program.endTime = date.dateByAddingTimeInterval(Double(random) * 3600)
                 date = program.endTime!
                 ch.programs?.append(program)
                 j++
@@ -49,7 +49,7 @@ class Channel: NSObject
         return channels
     }
 }
-extension Channel : Printable, DebugPrintable
+extension Channel
 {
     
     override var description : String

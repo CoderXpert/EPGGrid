@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Program: NSObject, Printable, DebugPrintable
+class Program: NSObject
 {
     var name : String?
     var startTime : NSDate?
@@ -19,7 +19,7 @@ class Program: NSObject, Printable, DebugPrintable
         {
             if(startTime != nil && endTime != nil)
             {
-                var dateFormater = NSDateFormatter()
+                let dateFormater = NSDateFormatter()
                 dateFormater.dateFormat = "h:mma"
                 return "\(dateFormater.stringFromDate(startTime!)) - \(dateFormater.stringFromDate(endTime!))"
             }
@@ -38,7 +38,7 @@ class Program: NSObject, Printable, DebugPrintable
         }
     }
 }
-extension Program : Printable, DebugPrintable
+extension Program 
 {
     override var description : String
     {

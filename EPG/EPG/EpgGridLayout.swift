@@ -33,17 +33,17 @@ class EpgGridLayout: UICollectionViewLayout
         setup()
     }
 
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
         setup()
     }
     func setup()
     {
-        var cal = NSCalendar.currentCalendar()
+        let cal = NSCalendar.currentCalendar()
         var date = NSDate()
         date = cal.startOfDayForDate(date)
-        date = cal.dateByAddingUnit(.DayCalendarUnit, value: -1, toDate: date, options: nil)!
+        date = cal.dateByAddingUnit(.Day, value: -1, toDate: date, options: [])!
         epgStartTime = date
         epgEndTime = epgStartTime.dateByAddingTimeInterval(weekTimeInterval)
         layoutInfo = NSMutableDictionary()
@@ -53,21 +53,21 @@ class EpgGridLayout: UICollectionViewLayout
     override func prepareLayout()
     {
         calculateFramesForAllPrograms()
-        var newLayoutInfo = NSMutableDictionary()
-        var cellLayoutInfo = NSMutableDictionary()
+        let newLayoutInfo = NSMutableDictionary()
+        let cellLayoutInfo = NSMutableDictionary()
         if let chs = channels
         {
-            var sections = chs.count
+            let sections = chs.count
             for section in 0..<sections
             {
-                var ch = chs[section]
+                let ch = chs[section]
                 if let programs = ch.programs
                 {
-                    var numberOfItems = programs.count
+                    let numberOfItems = programs.count
                     for index in 0..<numberOfItems
                     {
-                        var indexPath = NSIndexPath(forItem: index, inSection: section)
-                        var itemAttributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+                        let indexPath = NSIndexPath(forItem: index, inSection: section)
+                        let itemAttributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
                         itemAttributes.frame = frameForItemAtIndexPath(indexPath)
                         cellLayoutInfo[indexPath] = itemAttributes
                     }
@@ -80,16 +80,16 @@ class EpgGridLayout: UICollectionViewLayout
         
     }
 
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]?
+    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
-        var layoutAttributes  = NSMutableArray()
-        layoutInfo?.enumerateKeysAndObjectsUsingBlock({ (object: AnyObject!, elementInfo: AnyObject!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-            var infoDic = elementInfo as NSDictionary!
+        var layoutAttributes  = [UICollectionViewLayoutAttributes]()
+        layoutInfo?.enumerateKeysAndObjectsUsingBlock({ (object: AnyObject, elementInfo: AnyObject, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+            let infoDic = elementInfo as! NSDictionary as NSDictionary!
             infoDic.enumerateKeysAndObjectsUsingBlock( { (object: AnyObject!, attributes: AnyObject!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-                var attr = attributes as UICollectionViewLayoutAttributes!
+                let attr = attributes as! UICollectionViewLayoutAttributes
                 if (CGRectIntersectsRect(rect, attributes.frame))
                 {
-                    layoutAttributes.addObject(attributes)
+                    layoutAttributes.append(attr)
                 }
                 
             })
@@ -97,17 +97,17 @@ class EpgGridLayout: UICollectionViewLayout
 
         return layoutAttributes
     }
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes!
+    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> (UICollectionViewLayoutAttributes!)
     {
-        var attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+        let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
         attributes.frame = self.frameForItemAtIndexPath(indexPath);
         return attributes
     }
 
     func sizeForProgramTile(program : Program) -> CGSize
     {
-        var duartionFactor = program.duration / ACTUAL_HOUR
-        var width :CGFloat = CGFloat(duartionFactor * RELATIVE_HOUR)
+        let duartionFactor = program.duration / ACTUAL_HOUR
+        let width :CGFloat = CGFloat(duartionFactor * RELATIVE_HOUR)
         return CGSizeMake(width, TILE_HEIGHT)
     }
     func calculateFramesForAllPrograms()
@@ -117,16 +117,16 @@ class EpgGridLayout: UICollectionViewLayout
             for i in 0..<chs.count
             {
                 xPos = 0
-                var ch = chs[i]
+                let ch = chs[i]
                 if let programs = ch.programs
                 {
                     for index in 0..<programs.count
                     {
-                        var program = programs[index]
-                        var tileSize = sizeForProgramTile(program)
-                        var frame = CGRectMake(xPos, yPos, tileSize.width, tileSize.height)
-                        var rectString = NSStringFromCGRect(frame)
-                        var indexPath = NSIndexPath(forItem: index, inSection: i)
+                        let program = programs[index]
+                        let tileSize = sizeForProgramTile(program)
+                        let frame = CGRectMake(xPos, yPos, tileSize.width, tileSize.height)
+                        let rectString = NSStringFromCGRect(frame)
+                        let indexPath = NSIndexPath(forItem: index, inSection: i)
                         framesInfo![indexPath] = rectString
                         xPos = xPos+tileSize.width
                     }
@@ -139,7 +139,7 @@ class EpgGridLayout: UICollectionViewLayout
     {
         if let infoDic = framesInfo
         {
-            var rectString = infoDic[indexPath] as String
+            let rectString = infoDic[indexPath] as! String
             return CGRectFromString(rectString)
         }
         return CGRectZero
@@ -149,10 +149,10 @@ class EpgGridLayout: UICollectionViewLayout
     {
         if let chs = channels
         {
-            var intervals = epgEndTime.timeIntervalSinceDate(epgStartTime)
-            var numberOfHours = CGFloat(intervals / 3600)
-            var width = numberOfHours * TILE_WIDTH
-            var height = CGFloat(chs.count) * TILE_HEIGHT
+            let intervals = epgEndTime.timeIntervalSinceDate(epgStartTime)
+            let numberOfHours = CGFloat(intervals / 3600)
+            let width = numberOfHours * TILE_WIDTH
+            let height = CGFloat(chs.count) * TILE_HEIGHT
             
             return CGSize(width: width, height: height)
             

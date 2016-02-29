@@ -40,12 +40,12 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         let identifier = "cell"
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(identifier)
         if (cell == nil)
         {
             cell = UITableViewCell(style: .Subtitle, reuseIdentifier: identifier)
         }
-        var channel = self.channels![indexPath.row]
+        let channel = self.channels![indexPath.row]
         cell?.textLabel?.text = channel.channelName
         cell?.detailTextLabel?.text = channel.channelNumber
         return cell!
@@ -65,7 +65,7 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource
     {
         if let chs = channels
         {
-            var ch = chs[section]
+            let ch = chs[section]
             if let programs = ch.programs
             {
                 return programs.count
@@ -75,15 +75,15 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as EPGCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! EPGCollectionViewCell
         cell.layer.borderWidth = 1
         cell.layer.borderColor = UIColor.lightGrayColor().CGColor
         if let chs = channels
         {
-            var channel = chs[indexPath.section]
+            let channel = chs[indexPath.section]
             if let programs = channel.programs
             {
-                var program = programs[indexPath.row]
+                let program = programs[indexPath.row]
                 cell.programName.text = "\(channel.channelName!) \(program.name!)"
                 cell.programTIme.text = program.timeString
             }
@@ -93,11 +93,11 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource
     }
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        var ch = channels![indexPath.section]
-        var program = ch.programs![indexPath.row]
-        var message = "\(ch.channelName!) - \(program.name!)"
-        var alert = UIAlertController(title: "Alert", message: message, preferredStyle:.Alert)
-        var alertAction = UIAlertAction(title: "Ok", style: .Default) {  (alert:UIAlertAction!) in
+        let ch = channels![indexPath.section]
+        let program = ch.programs![indexPath.row]
+        let message = "\(ch.channelName!) - \(program.name!)"
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle:.Alert)
+        let alertAction = UIAlertAction(title: "Ok", style: .Default) {  (alert:UIAlertAction) in
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         alert.addAction(alertAction)
