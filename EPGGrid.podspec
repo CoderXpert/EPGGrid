@@ -9,4 +9,5 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => 'https://github.com/CoderXpert/EPGGrid.git', :tag => 'v1.0' }
   spec.source_files = "EPG/EPG/*.{h,m,swift}"
   spec.framework    = 'SystemConfiguration'
+  spec.dependency   = 'Spectrum'
 end
