@@ -1,3 +1,5 @@
+source 'https://github.com/CoderXpert/CXPodSpecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
 Pod::Spec.new do |spec|
   spec.name         = 'EPGGrid'
   spec.version      = '1.0'
@@ -9,5 +11,5 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => 'https://github.com/CoderXpert/EPGGrid.git', :tag => 'v1.0' }
   spec.source_files = "EPG/EPG/*.{h,m,swift}"
   spec.framework    = 'SystemConfiguration'
-  spec.dependency  'Spectrum', "1.0"
+  spec.dependency  'Spectrum', "2.0"
 end
