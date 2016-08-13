@@ -1,5 +1,3 @@
-source 'https://github.com/CoderXpert/CXPodSpecs.git'
-source 'https://github.com/CocoaPods/Specs.git'
 Pod::Spec.new do |spec|
   spec.name         = 'EPGGrid'
   spec.version      = '1.0'
