@@ -10,5 +10,4 @@ Pod::Spec.new do |spec|
   spec.source_files = "EPG/EPG/*.{h,m,swift}"
   spec.framework    = 'SystemConfiguration'
   spec.dependency  'Spectrum', "1.0"
-  spec.source 'https://github.com/CoderXpert/CXPodSpecs.git'
 end
