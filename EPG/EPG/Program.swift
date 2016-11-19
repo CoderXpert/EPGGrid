@@ -8,45 +8,28 @@
 
 import UIKit
 
-class Program: NSObject
-{
+class Program: NSObject {
     var name : String?
-    var startTime : NSDate?
-    var endTime : NSDate?
-    var timeString : String
-    {
-        get
-        {
-            if(startTime != nil && endTime != nil)
-            {
-                let dateFormater = NSDateFormatter()
-                dateFormater.dateFormat = "h:mma"
-                return "\(dateFormater.stringFromDate(startTime!)) - \(dateFormater.stringFromDate(endTime!))"
-            }
-            return "No info available"
-        }
+    var startTime : Date?
+    var endTime : Date?
+    var timeString : String {
+        guard let startTime = startTime, let endTime = endTime else { return "No info available" }
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "h:mma"
+        return "\(dateFormater.string(from: startTime)) - \(dateFormater.string(from: endTime))"
     }
-    var duration : NSTimeInterval
-    {
-        get
-        {
-            if(startTime != nil && endTime != nil)
-            {
-                return endTime!.timeIntervalSinceDate(startTime!)
-            }
-            return 0.0
-        }
+    var duration : TimeInterval {
+        guard let startTime = startTime, let endTime = endTime else { return 0 }
+        return endTime.timeIntervalSince(startTime)
     }
 }
-extension Program 
-{
-    override var description : String
-    {
+
+extension Program {
+    override var description : String {
         return "Program name: \(name) startTIme: \(startTime) endTime \(endTime)\n"
     }
     
-    override var debugDescription : String
-    {
+    override var debugDescription : String {
         return "Program name: \(name) startTIme: \(startTime) endTime \(endTime)\n"
     }
 }

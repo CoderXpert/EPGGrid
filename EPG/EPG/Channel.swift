@@ -8,57 +8,60 @@
 
 import UIKit
 
-class Channel: NSObject
-{
+class Channel: NSObject {
     var channelNumber:String?
     var channelName:String?
     var programs:[Program]?
+}
+
+extension Channel {
+    override var description : String {
+            return "Channel Name: \(channelName) programs \(programs)\n"
+    }
     
-    class func channels()->[Channel]
-    {
+    override var debugDescription : String {
+            return "Channel Name: \(channelName) programs \(programs)\n"
+    }
+}
+
+extension Channel {
+    class func channels()->[Channel] {
         var channels : [Channel] = []
-        let cal = NSCalendar.currentCalendar()
-        var startDate = NSDate()
-        startDate = cal.startOfDayForDate(startDate)
+        let cal = Calendar.current
+        var date = Date()
+        date = cal.startOfDay(for: date)
         
-        for i in 1...100
-        {
+        guard let startDate = cal.date(byAdding: .day, value: -1, to: date) else { return [] }
+        
+        let endDate = startDate.addingTimeInterval(60 * 60 * 24 * 7)
+        
+        for i in 1...100 {
             let ch:Channel = Channel()
             ch.channelNumber = "\(i)"
             ch.channelName = "CH \(i)"
             ch.programs = []
-            
-            //Lets generate some programs data,
-            var date = cal.dateByAddingUnit(.Day, value: -1, toDate: startDate, options: [])!
-            let endDate = startDate.dateByAddingTimeInterval(60 * 60 * 24 * 7)
-            
-            var j = 1
-            while (date.compare(endDate) == NSComparisonResult.OrderedAscending)
-            {
-                let program = Program()
-                program.name = "Program \(j)"
-                let random = Int(arc4random_uniform(2)+1)
-                program.startTime = date
-                program.endTime = date.dateByAddingTimeInterval(Double(random) * 3600)
-                date = program.endTime!
-                ch.programs?.append(program)
-                j++
-            }
+            ch.programs = programs(from: date, to: endDate)
             channels.append(ch)
         }
+        
         return channels
     }
-}
-extension Channel
-{
     
-    override var description : String
-        {
-            return "Channel Name: \(channelName) programs \(programs)\n"
-    }
-    
-    override var debugDescription : String
-        {
-            return "Channel Name: \(channelName) programs \(programs)\n"
+    private class func programs(from startDate: Date, to endDate: Date) -> [Program] {
+        var programStartTime = startDate
+        var j = 1
+        var programs = [Program]()
+        while programStartTime.compare(endDate) == .orderedAscending {
+            let program = Program()
+            program.name = "Program \(j)"
+            let random = Int(arc4random_uniform(2)+1)
+            program.startTime = programStartTime
+            let programEndTime = programStartTime.addingTimeInterval(Double(random) * 3600)
+            program.endTime = programEndTime
+            programStartTime = programEndTime
+            programs.append(program)
+            j += 1
+        }
+        return programs
     }
 }
